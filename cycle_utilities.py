@@ -81,9 +81,8 @@ def minimum_cycle_basis(G, weight=None):
         [2] de Pina, J. 1995. Applications of shortest path methods.
         Ph.D. thesis, University of Amsterdam, Netherlands
 
-    See Also
-    --------
-    simple_cycles, cycle_basis
+    THIS IS A SLIGHT MODIFICATION OF NETWORKX MCB ALGORITHM
+
     """
     # We first split the graph in commected subgraphs
     return sum((_min_cycle_basis(G.subgraph(c), weight) for c in
@@ -230,100 +229,7 @@ def linear_independence(vectors):
     
 
 
-"""
 def dag_cycle_basis_depina(graph,return_vector_edgeid = True):
-    G = graph.copy()
-    print(G.number_of_edges()-G.number_of_nodes()+1)
-    T = nx.dfs_tree(G,[n for n in G if G.in_degree(n)==0][0])
-    back_edges = []
-    for e in G.edges():
-        if e not in T.edges():
-            back_edges.append(e)
-    N= G.number_of_edges()-G.number_of_nodes()+1
-    #print(N)
-    edge_id = {}
-    count = 0
-    for e in back_edges:
-        edge_id[e] = count
-        count+=1
-    for e in T.edges():
-        edge_id[e] = count
-        count+=1
-    witnesses= []#cycle_basis_vector(G_root,list(e),edge_id) for e in back_edges]
-    for be in back_edges:
-        wa = np.zeros(len(edge_id))  
-        wa[edge_id[be]] = 1
-        witnesses.append(wa)
-    id_edge = {val:key for key,val in edge_id.items()}        
-    
-    pnodes = list(G.nodes())
-    nnodes = list(G.nodes())
-    nnodes = [-n for n in nnodes]
-    CB = []
-    id_edge = {val:key for key,val in edge_id.items()}
-    used_back_edges = []
-    for i in  range(N):
-        #print(i)
-        S = witnesses[i]
-        G_i = nx.Graph()
-        G_i.add_nodes_from(nnodes+pnodes)
-        for (u,v) in G.edges():
-            if S[edge_id[(u,v)]] !=1:
-                G_i.add_edge(u,v)
-                G_i.add_edge(-u,-v)
-            else:
-                G_i.add_edge(u,-v)
-                G_i.add_edge(-u,v)
-        current_cycles = []
-        for n in pnodes:
-            if nx.has_path(G_i,-n,n):
-            
-                current_cycles.append(nx.shortest_path(G_i,-n,n)) 
-            #except:
-            #    pass
-            #print("dir sp size",len(current_cycles))
-        for c in sorted(current_cycles,key=len):
-            c = [abs(cc) for cc in c]#[:-1]
-            #print(c)
-            vec= np.zeros(G.number_of_edges())
-            for m in range(len(c)-1):
-                n1,n2 = c[m],c[m+1]
-                try:
-                    k=edge_id[(n1,n2)]
-                except:
-                    k = edge_id[(n2,n1)]
-                vec[k] = 1
-            if np.dot(vec,S.T) % 2 ==1 :#and has_new_back_edge(all_back_edges,vec,edge_id,used_back_edges,return_edge =False)==True:#and vec[i]!=0:#and sum(vec)>3:# and len(np.where(CB==vec))==0:
-                ns = []
-                for index in range(len(vec)):
-                    if vec[index] == 1:
-                        ns.append(id_edge[index][0])
-                        ns.append(id_edge[index][1])
-                CB.append(vec)
-                break
-        for j in range(i+1,N):
-            S_j = witnesses[j]
-            if np.dot(vec,S_j.T) % 2 ==1:
-                S_j = gf2_sum(S,S_j)
-                witnesses[j] = S_j
-    
-    cycle_basis = []
-    id_edge = {val:key for key,val in edge_id.items()}
-    for cv in CB:
-        nodeset = []
-        for i in range(len(cv)):
-            if cv[i] ==1:
-                u,v = id_edge[i]
-                nodeset += [u,v]
-        cycle_basis.append(list(set(nodeset)))
-    if return_vector_edgeid==True:  
-        return cycle_basis,edge_id,CB
-    else:
-        return cycle_basis
-"""
-
-def dag_cycle_basis_depina(graph,return_vector_edgeid = True):
-    print("other depina")
     G = graph.copy()
     T = nx.dfs_tree(G,[n for n in G if G.in_degree(n)==0][0])
     back_edges = []
