@@ -9,9 +9,6 @@ Author: Tim Evans
 """
 import networkx as nx
 
-# this can be changed to import any suitable test DAG
-#import model_test2 as test
-
 def set_heights(DAG, ordered=False, add_labels=False,add_labels_fractional=False):
     """    Find the heights of all nodes.
     
@@ -81,83 +78,12 @@ def height_recursive(DAG, current, height, ordered, depth=0):
             height_recursive(DAG, node, height, ordered, depth+1)
     return None
 
-__name__ = "notmail"
 if __name__ == "__main__":
     """Tests to see if height routines are working"""
     print ('Testing alg_height' )
-    DAG= test.make_DAG()
+    DAG= nx.DiGraph()
+    DAG.add_edges_from([(0,1),(1,2),(0,2)])
     height=set_heights(DAG, ordered=True,add_labels=True)
     print ('node height node[height]' )
     for node in DAG.nodes():
-        print (node,height[node],DAG.node[node]['height'] )                 
-            
-    """   
-            
-    date = {n:str2date(n) for n in G}
-    min_time = min(date.values())
-    partTime = defaultdict(list)
-    for key,val in Ppart.items():
-        partTime[key] = [(date[n]-min_time) for n in val]
-        time_variation = {}
-        year = 365.25*(8.64*10**10)
-    for p, timedeltas in partTime.items():
-        if len(timedeltas) >1:
-            microtimes = [timedelta_to_microtime(td) for td in timedeltas]
-            std = calc_std(microtimes)
-            time_variation[p] = [ np.mean(microtimes)/(year),std/(year)]
-        else:
-            microtimes = [timedelta_to_microtime(td) for td in timedeltas] 
-            std = calc_std(microtimes)
-            time_variation[p] =[microtimes[0]/year for a in range(1)]+[std]
-    x,y = [],[]
-    for key,val in time_variation.items(): 
-        x.append(val[0]) 
-        y.append(len(Ppart[key]))
-    plt.scatter(x,y)#,label="$\mathcal{A}\geq 10$")#plt.colorbar(label = "$|\mathcal{A}|$")
-    plt.xlabel("$<t_{\mathcal{A}}>-t_0$",fontsize =14)
-    #plt.legend()
-    plt.ylabel("$|\mathcal{A}|$",fontsize = 14)
-    plt.xscale("log")
-    plt.yscale("log")#plt.xlim(9,100)#plt.title(title)
-    plt.tight_layout()
-    plt.savefig("size_vs_averageT_predecessors_common_bibliographies_antichains_hepth"+".png")
-    plt.show()
-    
-    """
-        
-    x,y,z = [],[],[]  
-    for i in range(len(successor_diversity)):
-        x.append(successor_diversity[i][0])
-        y.append(successor_diversity[i][1])
-        z.append(successor_diversity[i][2])    
-        
-    plt.errorbar(x,z,xerr=y,capsize =2,fmt=".",label="Successors siblinarity")
-    x,y,z = [],[],[]  
-    for i in height_div.keys():
-        x.append(i)
-        y.append(height_div[i])
-        
-    plt.errorbar(x,y,fmt=".",label="Height")
-    plt.legend()
-    
-    predecessor_diversity = []
-    for key,val in partition.items():
-        ave_height = np.mean([H[a] for a in val])
-        std_height =np.std([H[a] for a in val])
-        predecessor_diversity.append((ave_height,std_height,calc_diversity(val,label)))
-    
-    
-    x,y,z = [],[],[]  
-    for i in range(len(predecessor_diversity)):
-        x.append(predecessor_diversity[i][0])
-        y.append(predecessor_diversity[i][1])
-        z.append(predecessor_diversity[i][2])    
-        
-    plt.errorbar(x,z,xerr=y,capsize =2,fmt=".",label="Predecessor siblinarity")
-    x,y,z = [],[],[]  
-    for i in depth_div.keys():
-        x.append(i)
-        y.append(depth_div[i])
-        
-    plt.errorbar(x,y,fmt=".",label="Depth")
-    plt.legend()
+        print (node,height[node],DAG.node[node]['height'] )     
