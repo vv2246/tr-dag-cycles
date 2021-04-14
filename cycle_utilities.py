@@ -210,7 +210,7 @@ def tr(DAG, output=False):
 
 
 
-def print_cycle_statistics(graph,cycles=None, return_eigvals = False,):
+def print_cycle_statistics(graph,cycles=None, return_eigvals = False):
     G = graph.copy()
     E_0 = G.number_of_edges()
     tr(G)
