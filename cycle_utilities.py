@@ -183,8 +183,11 @@ def random_dag(N,P):
        
 
 
-def tr(DAG, output=False):
-    # for printing progress
+def tr(DAG):
+    # Transitive reduction of DAG
+    # Input : networkx DiGraph
+    # Returns : TRed DAG
+    # courtesy of J.Clough.
     E = DAG.number_of_edges()
     i = 0
     print_limit = 10
@@ -198,13 +201,6 @@ def tr(DAG, output=False):
         if not nx.has_path(DAG, a, b):
             DAG.add_edge(a, b)
         
-        if output:
-            i += 1
-            pc = (i/float(E))*100
-            if pc > print_counter:
-                #print ('Finished %s percent' % int(math.floor(pc)))
-                print_counter += print_limit
-                
     return DAG    
 
 
