@@ -188,7 +188,6 @@ def tr(DAG):
     # Input : networkx DiGraph
     # Returns : TRed DAG
     # courtesy of J.Clough.
-    E = DAG.number_of_edges()
     i = 0
     print_limit = 10
     print_counter = print_limit
